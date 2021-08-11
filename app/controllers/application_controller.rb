@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
   end
 
   def self.autolab_require(path)
-    $LOADED_FEATURES.delete(path) if (Rails.env == "development")
+    $LOADED_FEATURES.delete(path.to_s) if (Rails.env == "development")
     require(path)
   end
 
