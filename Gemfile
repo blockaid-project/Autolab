@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.6.6'
+ruby '2.5.8', :engine => 'jruby', :engine_version => '9.2.17.0'
 
 gem 'rails', '=5.2.0'
 
@@ -46,13 +46,21 @@ gem 'rake', '>=10.3.2'
 gem 'populator', '>=1.0.0'
 
 # To communicate with MySQL database
-gem 'mysql2', '~>0.4.10'
+# gem 'mysql2', '~>0.4.10'
+# gem 'activerecord-jdbcmysql-adapter'
+# gem 'activerecord-jdbcmysql-adapter', git: 'git@github.com:zhangwen0411/activerecord-jdbc-adapter.git', branch: 'main', glob: 'activerecord-jdbcmysql-adapter/*.gemspec'
+git 'git@github.com:zhangwen0411/activerecord-jdbc-adapter.git', branch: '52-stable' do
+  # gem 'activerecord-jdbc-adapter', git: 'git@github.com:zhangwen0411/activerecord-jdbc-adapter.git', branch: '52-stable', :platform => :jruby
+  # gem 'activerecord-jdbc-adapter', :platform => :jruby
+  gem 'activerecord-jdbcmysql-adapter', :platform => :jruby
+end
 
 # Development server
-gem 'thin'
+# gem 'thin'
+gem 'puma'
 
 # External authentication
-gem 'devise', '>=4.5.0'
+gem 'devise', '>=4.5.0', github: 'heartcombo/devise'
 gem 'omniauth', '>=1.2.2'
 gem 'omniauth-facebook', '>=2.0.0'
 gem 'omniauth-google-oauth2', '>=0.2.5'
@@ -107,7 +115,7 @@ gem 'rack-ssl-enforcer'
 group :development do
   # Better Error Pages
   gem 'better_errors'
-  gem 'binding_of_caller' # enhances better_errors
+  # gem 'binding_of_caller' # enhances better_errors
 
   # static code analyzer
   gem 'rubocop', require: false
@@ -116,18 +124,18 @@ group :development do
   gem 'yard'
 
   # sqlite3 adapter
-  gem 'sqlite3', '~> 1.3.6'
+  # gem 'sqlite3', '~> 1.3.6'
 end
 
 # Also install sqlite3 for docker installations
-if ENV['DEPLOY_METHOD'] == "docker"
-  gem 'sqlite3', '~> 1.3.6'
-end
+# if ENV['DEPLOY_METHOD'] == "docker"
+#   gem 'sqlite3', '~> 1.3.6'
+# end
 
 gem 'tzinfo-data'
 
 # Useful debugger
-gem 'byebug', '>=3.5.1'
+# gem 'byebug', '>=3.5.1'
 
 # for PDF annotations
 # This is an outdate version however support for

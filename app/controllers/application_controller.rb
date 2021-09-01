@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
   end
 
   def self.autolab_require(path)
-    $LOADED_FEATURES.delete(path) if (Rails.env == "development")
+    $LOADED_FEATURES.delete(path.to_s) if (Rails.env == "development")
     require(path)
   end
 
@@ -142,7 +142,7 @@ protected
   def set_course
     course_name = params[:course_name] ||
                   (params[:controller] == "courses" ? params[:name] : nil)
-    @course = Course.find_by(name: course_name) if course_name
+    @course = Course.select(:id, :name).find_by(name: course_name) if course_name
 
     unless @course
       render :file => "#{Rails.root}/public/404.html",  :status => 404 and return
@@ -190,13 +190,15 @@ protected
       redirect_to(controller: :courses, action: :index) && return
     end
 
+    disabled = Course.select(:disabled).find(@course.id).disabled?
     # check if course was disabled
-    if @course.disabled? && !@cud.has_auth_level?(:instructor)
+    if disabled && !@cud.has_auth_level?(:instructor)
       flash[:error] = "Your course has been disabled by your instructor.
                        Please contact them directly if you have any questions"
       redirect_to(controller: :courses, action: :index) && return
     end
 
+    @course.reload
     # should be able to unsudo from an invalid user and
     # an invalid user should be able to make himself valid through edit page
     invalid_cud = !@cud.valid?

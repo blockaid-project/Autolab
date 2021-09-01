@@ -453,7 +453,7 @@ class AssessmentsController < ApplicationController
     end
 
     # Check if we should include regrade as a function
-    @autograded = @assessment.has_autograder?
+    # @autograded = @assessment.has_autograder?
   end
 
   action_auth_level :history, :student
