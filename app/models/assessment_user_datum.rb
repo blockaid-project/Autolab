@@ -246,7 +246,7 @@ protected
 
   def cgdub_cache_key
     # gets it into the YYYYMMDDHHMMSS form
-    dua = assessment.course.cgdub_dependencies_updated_at.utc.to_s(:number)
+    dua = course_user_datum.course.cgdub_dependencies_updated_at.utc.to_s(:number)
 
     "cgdub/dua-#{dua}/u-#{course_user_datum_id}/a-#{assessment_id}"
   end
@@ -364,7 +364,7 @@ private
   end
 
   def aud_for_assessment_before
-    if (assessment_before = assessment.assessment_before)
+    if (assessment_before = Assessment.select(:id, :course_id).find(assessment_id).assessment_before)
       assessment_before.aud_for course_user_datum_id
     else
       nil

@@ -80,7 +80,7 @@ class Assessment < ApplicationRecord
   #
   # This gives assessments a defined ordering, required for grace day calculations.
   def assessment_before
-    sorted_asmts = course.assessments.ordered
+    sorted_asmts = course.assessments.ordered.select(:id, :course_id)
     self_index = sorted_asmts.index self
     self_index > 0 ? sorted_asmts[self_index - 1] : nil
   end
