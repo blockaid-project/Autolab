@@ -143,7 +143,7 @@ namespace :autolab do
 
       u.first_name = "User"
       u.last_name = i.to_s
-      u.email = "user#{i.to_s}_#{course.name}@foo.bar"
+      u.email = "user#{i.to_s}_#{course.name}@foo.bar".downcase
 
       u.school = "SCS"
       u.major = "CS"
