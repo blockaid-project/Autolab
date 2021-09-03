@@ -15,7 +15,7 @@ class CoursesController < ApplicationController
   end
 
   def index
-    courses_for_user = User.courses_for_user current_user
+    courses_for_user = User.courses_for_user(current_user).select(:id, :name, :display_name, :start_date, :end_date, :disabled, :semester)
 
     if courses_for_user.any?
       @listing = categorize_courses_for_listing courses_for_user

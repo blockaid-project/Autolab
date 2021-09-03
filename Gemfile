@@ -47,11 +47,7 @@ gem 'populator', '>=1.0.0'
 
 # To communicate with MySQL database
 # gem 'mysql2', '~>0.4.10'
-# gem 'activerecord-jdbcmysql-adapter'
-# gem 'activerecord-jdbcmysql-adapter', git: 'git@github.com:zhangwen0411/activerecord-jdbc-adapter.git', branch: 'main', glob: 'activerecord-jdbcmysql-adapter/*.gemspec'
 git 'git@github.com:zhangwen0411/activerecord-jdbc-adapter.git', branch: '52-stable' do
-  # gem 'activerecord-jdbc-adapter', git: 'git@github.com:zhangwen0411/activerecord-jdbc-adapter.git', branch: '52-stable', :platform => :jruby
-  # gem 'activerecord-jdbc-adapter', :platform => :jruby
   gem 'activerecord-jdbcmysql-adapter', :platform => :jruby
 end
 
@@ -151,4 +147,8 @@ gem 'sprockets-rails', '>=3.2.1'
 gem "jstz-rails3-plus", ">= 1.0"
 
 # For getting file types 
-gem 'mimemagic', '>= 0.4.2'
+git 'git@github.com:jellybob/mimemagic.git', branch: '0.3.6' do
+  gem 'mimemagic', '>= 0.3.2'
+end
+
+gem 'lazy_columns'

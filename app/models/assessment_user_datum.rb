@@ -364,7 +364,7 @@ private
   end
 
   def aud_for_assessment_before
-    if (assessment_before = Assessment.select(:id, :course_id).find(assessment_id).assessment_before)
+    if (assessment_before = assessment.assessment_before)
       assessment_before.aud_for course_user_datum_id
     else
       nil

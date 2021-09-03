@@ -6,6 +6,8 @@ class Assessment < ApplicationRecord
   # Mass-assignment
   # attr_protected :name
 
+  lazy_load :visible_at, :description, :created_at, :updated_at, :handin_filename, :handin_directory, :handout, :writeup, :allow_unofficial, :max_submissions, :disable_handins, :exam, :max_size, :version_threshold, :late_penalty_id, :version_penalty_id, :grading_deadline, :has_autograde_old, :has_scoreboard_old, :has_svn, :quiz, :quizData, :remote_handin_path, :group_size, :has_custom_form, :languages, :textfields, :embedded_quiz_form_data, :embedded_quiz, :embedded_quiz_form
+
   # Associations
   belongs_to :course
   belongs_to :course_user_datum
@@ -80,7 +82,7 @@ class Assessment < ApplicationRecord
   #
   # This gives assessments a defined ordering, required for grace day calculations.
   def assessment_before
-    sorted_asmts = course.assessments.ordered.select(:id, :course_id)
+    sorted_asmts = course.assessments.ordered
     self_index = sorted_asmts.index self
     self_index > 0 ? sorted_asmts[self_index - 1] : nil
   end

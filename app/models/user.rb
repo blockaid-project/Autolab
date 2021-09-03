@@ -18,6 +18,12 @@ class User < ApplicationRecord
   trim_field :school
   validates :first_name, :last_name, :email, presence: true
 
+  def self.serialize_from_session(key, salt)
+    ActiveRecord::Base.connection.execute("SET @_MY_UID = #{key[0]}")
+    super
+  end
+
+
   # check if user is instructor in any course
   def instructor?
     cuds = course_user_data

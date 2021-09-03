@@ -342,7 +342,7 @@ private
   end
 
   def global_grace_days_left!
-    latest_asmt = course.assessments.ordered.select(:id).last
+    latest_asmt = course.assessments.ordered.last
 
     if latest_asmt.nil?
       # Just don't cache anything since no database query is necessary
