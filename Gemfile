@@ -151,4 +151,6 @@ git 'git@github.com:jellybob/mimemagic.git', branch: '0.3.6' do
   gem 'mimemagic', '>= 0.3.2'
 end
 
-gem 'lazy_columns'
+git 'git@github.com:zhangwen0411/lazy_columns.git' do
+  gem 'lazy_columns'
+end

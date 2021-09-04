@@ -28,6 +28,13 @@ GIT
       jdbc-mysql (~> 5.1.36, < 9)
     jdbc-mysql (5.1.47)
 
+GIT
+  remote: git@github.com:zhangwen0411/lazy_columns.git
+  revision: 538ddbf4d95f64bf2059401c4e02d2b12d10284a
+  specs:
+    lazy_columns (0.5.9)
+      activerecord (>= 3.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -174,8 +181,6 @@ GEM
     jstz-rails3-plus (1.0.5)
       railties (>= 3.1)
     jwt (2.2.2)
-    lazy_columns (0.5.9)
-      activerecord (>= 3.1)
     libv8 (8.4.255.0)
     loofah (2.9.0)
       crass (~> 1.0.2)
@@ -405,7 +410,7 @@ DEPENDENCIES
   jquery-rails
   js_cookie_rails
   jstz-rails3-plus (>= 1.0)
-  lazy_columns
+  lazy_columns!
   materialize-sass
   mimemagic (>= 0.3.2)!
   mini_racer
