@@ -18,7 +18,7 @@ GIT
 
 GIT
   remote: git@github.com:zhangwen0411/activerecord-jdbc-adapter.git
-  revision: 76cda406536c0e97e64675af6a8ed9dcd57e34db
+  revision: 73f184be324b51a16baa6c391a39ba5a4840bde8
   branch: 52-stable
   specs:
     activerecord-jdbc-adapter (52.7-java)
@@ -113,7 +113,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.1.8)
+    concurrent-ruby (1.1.9)
     crack (0.4.5)
       rexml
     crass (1.0.6)
@@ -194,7 +194,7 @@ GEM
     mini_portile2 (2.5.0)
     mini_racer (0.2.9)
       libv8 (>= 6.9.411)
-    minitest (5.14.0)
+    minitest (5.14.4)
     moment_timezone-rails (0.5.0)
     momentjs-rails (2.20.1)
       railties (>= 3.1)
