@@ -373,6 +373,6 @@ private
   end
 
   def reset_trace
-    ActiveRecord::Base.connection.execute("RESET TRACE")
+    ActiveRecord::Base.connection.execute("SET @TRACE = null")
   end
 end
