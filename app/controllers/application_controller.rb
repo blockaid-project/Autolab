@@ -20,6 +20,8 @@ class ApplicationController < ActionController::Base
   before_action :update_persistent_announcements
   before_action :set_breadcrumbs
 
+  after_action :reset_trace # For Privoxy.
+
   rescue_from ActionView::MissingTemplate do |exception|
       redirect_to("/home/error_404")
   end
@@ -368,5 +370,9 @@ private
        format.json { head :internal_server_error }
        format.js { head :internal_server_error }
     end
+  end
+
+  def reset_trace
+    ActiveRecord::Base.connection.execute("RESET TRACE")
   end
 end
