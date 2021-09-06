@@ -426,8 +426,8 @@ private
 
     # populate score values from scores
     problem_id_to_name = assessment.problem_id_to_name
-    scores.each do |score|
-      if score.score && (include_unreleased || score.released?)
+    (include_unreleased ? scores : scores.where(released: true)).each do |score|
+      if score.score
         # will be a non-nil float
         v[problem_id_to_name[score.problem_id]] = score.score
       end
