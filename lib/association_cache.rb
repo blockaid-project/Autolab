@@ -33,9 +33,11 @@ class AssociationCache
   # NOTE
   # might need to batch this (find_each) at some point.
   # as of 4/1/13, faster unbatched.
-  def load_auds(find_options = {})
+  def load_auds(find_options = {}, with_cud = false)
     @auds = {}
-    @course.assessment_user_data.where(find_options[:conditions]).each do |aud|
+    all_auds = @course.assessment_user_data
+    all_auds = all_auds.joins(:course_user_datum) if with_cud
+    all_auds.where(find_options[:conditions]).each do |aud|
       @auds[au_key aud.assessment_id, aud.course_user_datum_id] = aud
     end
   end
@@ -50,6 +52,17 @@ class AssociationCache
   def load_latest_submission_scores(find_options = {})
     @latest_submission_scores = {}
     Score.on_latest_submissions.for_course(@course).where(find_options[:conditions]).each do |score|
+      @latest_submission_scores[score.submission_id] = [] unless @latest_submission_scores[score.submission_id]
+      @latest_submission_scores[score.submission_id] << score
+    end
+    @latest_submission_scores.default = []
+  end
+
+  def load_latest_submission_scores_for_assessment(course_id, ass_id, section = nil)
+    @latest_submission_scores = {}
+    scores = Score.on_latest_submissions.where({ submissions: { assessment_id: ass_id } })
+    scores = scores.joins(submission: :course_user_datum).where({ course_user_data: { course_id: course_id, section: section } }) unless section.nil?
+    scores.each do |score|
       @latest_submission_scores[score.submission_id] = [] unless @latest_submission_scores[score.submission_id]
       @latest_submission_scores[score.submission_id] << score
     end
