@@ -365,7 +365,7 @@ private
   end
 
   def set_handin
-    submission_count = @assessment.submissions.where(course_user_datum_id: @cud.id).count
+    submission_count = @assessment.submissions.where(course_user_datum_id: @cud.id).count(:id)
     @left_count = [@assessment.max_submissions - submission_count, 0].max
     @aud = AssessmentUserDatum.get @assessment.id, @cud.id
     @can_submit, @why_not = @aud.can_submit? Time.now

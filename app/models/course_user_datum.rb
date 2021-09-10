@@ -15,7 +15,7 @@ class CourseUserDatum < ApplicationRecord
   trim_field :school, :major, :year, :lecture, :section, :grade_policy, :email
 
   belongs_to :course
-  belongs_to :user
+  belongs_to :user, -> { select(:id, :first_name, :last_name, :email, :school, :major, :year, :administrator) }
   belongs_to :tweak, class_name: "Tweak"
   has_many :submissions, dependent: :destroy
   has_many :extensions, dependent: :destroy
