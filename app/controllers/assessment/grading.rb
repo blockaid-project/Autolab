@@ -504,9 +504,7 @@ private
     id = @assessment.id
 
     # section filter
-    cud_o = params[:section] ? { conditions: { section: @cud.section } } : {}
-    aud_o = params[:section] ? { conditions: { assessment_id: id, course_user_data: { section: @cud.section } } } : { assessment_id: id }
-    submissions_o = params[:section] ? {
+    o = params[:section] ? {
       conditions: { assessment_id: id, course_user_data: { section: @cud.section } }
     } : {
       conditions: { assessment_id: id }
@@ -515,10 +513,10 @@ private
     # currently loads *all* assessment AUDs, scores in spite of the section filter
     # but that's okay, it only takes a couple 10ms
     cache = AssociationCache.new(@course) do |_|
-      _.load_course_user_data cud_o
-      _.load_auds aud_o, with_cud: true
-      _.load_latest_submissions submissions_o
-      _.load_latest_submission_scores_for_assessment(@course.id, id, params[:section] ? @cud.section : nil)
+      _.load_course_user_data
+      _.load_auds
+      _.load_latest_submissions o
+      _.load_latest_submission_scores(conditions: { submissions: { assessment_id: id } })
       _.load_assessments
     end
 
