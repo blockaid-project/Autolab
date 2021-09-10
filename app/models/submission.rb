@@ -5,7 +5,7 @@ require "json"
 # Submissions jointly belong to Assessments and CourseUserData
 #
 class Submission < ApplicationRecord
-  lazy_load :filename
+  lazy_load :real_filename
 
   attr_accessor :lang, :formfield1, :formfield2, :formfield3
   trim_field :filename, :notes, :mime_type
@@ -78,9 +78,10 @@ class Submission < ApplicationRecord
     filename = course_user_datum.user.email + "_" +
                version.to_s + "_" +
                assessment.handin_filename
+    real_filename = "#{('a'..'z').to_a.shuffle[0,8].join}_#{filename}"
     directory = assessment.handin_directory
     path = Rails.root.join("courses", course_user_datum.course.name,
-                           assessment.name, directory, filename)
+                           assessment.name, directory, real_filename)
 
     if upload["file"]
       # Sanity!
@@ -96,6 +97,7 @@ class Submission < ApplicationRecord
     end
 
     self.filename = filename
+    self.real_filename = real_filename
 
     if upload["file"]
       begin
@@ -173,13 +175,13 @@ class Submission < ApplicationRecord
   end
 
   def handin_file_path
-    return nil unless filename
-    File.join(assessment.handin_directory_path, filename)
+    return nil unless real_filename
+    File.join(assessment.handin_directory_path, real_filename)
   end
 
   def handin_annotated_file_path
-    return nil unless filename
-    File.join(assessment.handin_directory_path, "annotated_#{filename}")
+    return nil unless real_filename
+    File.join(assessment.handin_directory_path, "annotated_#{real_filename}")
   end
 
   def autograde_feedback_filename
@@ -328,8 +330,7 @@ class Submission < ApplicationRecord
     # no file, no mime type
     return unless filename
 
-    path = File.join(assessment.handin_directory_path, filename)
-    file_output = `file -ib #{path}`
+    file_output = `file -ib #{handin_file_path}`
     self.detected_mime_type = file_output[/^(\w)+\/([\w-])+/]
   end
 

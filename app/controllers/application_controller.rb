@@ -243,17 +243,21 @@ protected
   # needed by the various methods for dealing with submissions.
   # Redirects to the error page if it encounters an issue.
   def set_submission
-    begin
-      @submission = @assessment.submissions.find(params[:submission_id] || params[:id])
-    rescue
+    submission_id = params[:submission_id] || params[:id]
+    unless @assessment.submissions.exists?(submission_id)
       flash[:error] = "Could not find submission with id #{params[:submission_id] || params[:id]}."
       redirect_to([@course, @assessment]) && return
     end
 
-    unless @cud.instructor || @cud.course_assistant ||
-           @submission.course_user_datum_id == @cud.id
-      flash[:error] = "You do not have permission to access this submission."
-      redirect_to([@course, @assessment]) && return
+    if @cud.instructor || @cud.course_assistant
+      @submission = @assessment.submissions.find submission_id
+    else
+      begin
+        @submission = @assessment.submissions.find_by! id: submission_id, course_user_datum_id: @cud.id
+      rescue
+        flash[:error] = "You do not have permission to access this submission."
+        redirect_to([@course, @assessment]) && return
+      end
     end
 
     if (@assessment.exam? || @course.exam_in_progress?) &&

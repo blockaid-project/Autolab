@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_01_022133) do
+ActiveRecord::Schema.define(version: 2021_09_10_065100) do
 
   create_table "annotations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "submission_id"
@@ -307,6 +307,7 @@ ActiveRecord::Schema.define(version: 2020_11_01_022133) do
     t.text "settings"
     t.text "embedded_quiz_form_answer"
     t.integer "submitted_by_app_id"
+    t.string "real_filename"
     t.index ["assessment_id"], name: "index_submissions_on_assessment_id"
     t.index ["course_user_datum_id"], name: "index_submissions_on_course_user_datum_id"
   end
