@@ -23,7 +23,7 @@ class CustomLogger
   end
 
   def log(message, severity = Logger::INFO)
-    unless Rails.env == "test" || Rails.env == "development"
+    unless Rails.env == "test" || Rails.env == "development" || File.basename($0) == 'rake'
       @logger.add(severity) { message }
     end
   end

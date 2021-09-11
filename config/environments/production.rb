@@ -76,17 +76,18 @@ Autolab3::Application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   # Provide context to the email generator about the host
-  config.action_mailer.default_url_options = {protocol: 'http', host: 'yourhost.com' }
+  # config.action_mailer.default_url_options = {protocol: 'http', host: 'yourhost.com' }
+  config.action_mailer.delivery_method = :smtp
 
   # Use a custom smtp server, such as gmail, mailgun, sendgrid
   config.action_mailer.smtp_settings = {
-    address:              'smtp.example.com',
-    port:                 25,
-    enable_starttls_auto: true,
-    authentication:       'login',
-    user_name:            'example',
-    password:             'example',
-    domain:               'example.com',
+    address:              '127.0.0.1',
+    port:                 9000,
+    # enable_starttls_auto: true,
+    # authentication:       'login',
+    # user_name:            'example',
+    # password:             'example',
+    # domain:               'example.com',
   }
 
   # default from 
