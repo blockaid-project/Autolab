@@ -30,7 +30,7 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 # you need to make sure to reconnect any threads in the `on_worker_boot`
 # block.
 #
-# preload_app!
+preload_app!
 
 # The code in the `on_worker_boot` will be called if you are using
 # clustered mode by specifying a number of `workers`. After each worker
@@ -45,3 +45,16 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+app_dir = File.expand_path("../..", __FILE__)
+shared_dir = "#{app_dir}/shared"
+
+bind "unix://#{shared_dir}/sockets/puma.sock"
+
+
+stdout_redirect "#{shared_dir}/log/puma.stdout.log", "#{shared_dir}/log/puma.stderr.log", true
+
+
+pidfile "#{shared_dir}/pids/puma.pid"
+state_path "#{shared_dir}/pids/puma.state"
+activate_control_app
