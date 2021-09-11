@@ -9,6 +9,10 @@
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
 
+  if Rails.env.include? "checked"
+    before_action :reset_trace # For Privoxy.
+  end
+
   before_action :configure_permitted_paramters, if: :devise_controller?
   before_action :maintenance_mode?
   before_action :run_scheduler
@@ -19,8 +23,6 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_for_action
   before_action :update_persistent_announcements
   before_action :set_breadcrumbs
-
-  after_action :reset_trace # For Privoxy.
 
   rescue_from ActionView::MissingTemplate do |exception|
       redirect_to("/home/error_404")
