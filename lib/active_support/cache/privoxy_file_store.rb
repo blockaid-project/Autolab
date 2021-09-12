@@ -7,7 +7,7 @@ module ActiveSupport
       end
 
       def read(name, options = nil)
-        puts "CACHE READ:\t#{name}"
+        ActiveRecord::Base.connection.execute("CHECK CACHE READ #{name}")
         super
       end
     end
