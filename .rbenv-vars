@@ -1,1 +1,1 @@
-JRUBY_OPTS='-J-Dprivoxy.print_formulas=true -J-Dprivoxy.use_colors=true -J-Dprivoxy.enable_caching=true -J-Dprivoxy.quiet=true'
+JRUBY_OPTS='-J-Dprivoxy.print_formulas=true -J-Dprivoxy.use_colors=true -J-Dprivoxy.enable_caching=false -J-Dprivoxy.quiet=false -J-Dprivoxy.cache_no_retain=false -J-Dprivoxy.skip_checking=false'

@@ -138,14 +138,15 @@ class CourseUserDatum < ApplicationRecord
     @category_average[category][as_seen_by] ||= category_average! category, as_seen_by
   end
 
-  def has_auth_level?(level)
+  def has_auth_level?(level, local_user = nil)
+    local_user = user if local_user.nil?
     case level
     when :administrator
-      user.administrator?
+      local_user.administrator?
     when :instructor
-      instructor? || user.administrator?
+      instructor? || local_user.administrator?
     when :course_assistant
-      course_assistant? || instructor? || user.administrator?
+      course_assistant? || instructor? || local_user.administrator?
     when :student
       true
     else
@@ -220,9 +221,7 @@ class CourseUserDatum < ApplicationRecord
 
   # find a cud in the course, or create one using
   # user's info if he's an admin
-  def self.find_or_create_cud_for_course(course, uid)
-    user = User.find(uid)
-
+  def self.find_or_create_cud_for_course(course, user)
     cud = user.course_user_data.find_by(course: course)
 
     if cud

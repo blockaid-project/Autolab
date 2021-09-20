@@ -165,18 +165,18 @@ protected
   def authorize_user_for_course
     redirect_to(root_path) && return if current_user.nil?
 
-    uid = current_user.id
+    this_user = current_user
     # don't allow sudoing across courses
     if session[:sudo]
       if (@course.id == session[:sudo]["course_id"])
-        uid = session[:sudo]["user_id"]
+        this_user = User.find session[:sudo]["user_id"]
       else
         session[:sudo] = nil
       end
     end
 
     # set @cud
-    cud, reason = CourseUserDatum.find_or_create_cud_for_course @course, uid
+    cud, reason = CourseUserDatum.find_or_create_cud_for_course @course, this_user
     case reason
     when :found
       @cud = cud
@@ -194,15 +194,19 @@ protected
       redirect_to(controller: :courses, action: :index) && return
     end
 
-    disabled = Course.select(:disabled).find(@course.id).disabled?
+    if @cud.has_auth_level? :instructor, current_user
+      @course = Course.find @course.id
+    else
+      @course = Course.find_by id: @course.id, disabled: false
+    end
+
     # check if course was disabled
-    if disabled && !@cud.has_auth_level?(:instructor)
+    if @course.nil?
       flash[:error] = "Your course has been disabled by your instructor.
                        Please contact them directly if you have any questions"
       redirect_to(controller: :courses, action: :index) && return
     end
 
-    @course.reload
     # should be able to unsudo from an invalid user and
     # an invalid user should be able to make himself valid through edit page
     invalid_cud = !@cud.valid?
