@@ -52,8 +52,16 @@ class Assessment < ApplicationRecord
 
   # Scopes
   scope :ordered, -> { order(ORDERING) }
-  scope :released, ->(as_of = Time.now) { where(RELEASED, as_of) }
-  scope :unreleased, ->(as_of = Time.now) { where.not(RELEASED, as_of) }
+  scope :released, ->(as_of = Time.now) {
+    where(arel_table[:start_at].lt(
+      predicate_builder.build_bind_attribute(:start_at, as_of)
+    ))
+  }
+  scope :unreleased, ->(as_of = Time.now) {
+    where(arel_table[:start_at].gteq(
+      predicate_builder.build_bind_attribute(:start_at, as_of)
+    ))
+  }
 
   # Misc.
   accepts_nested_attributes_for :late_penalty, :version_penalty, allow_destroy: true

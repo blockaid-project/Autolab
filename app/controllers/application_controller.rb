@@ -276,8 +276,9 @@ protected
   end
 
   def run_scheduler
-    # actions = Scheduler.where("next < ?", Time.now)
-    actions = Scheduler.where(Scheduler.arel_table[:next].lt(Time.now))
+    actions = Scheduler.where(Scheduler.arel_table[:next].lt(
+      Scheduler.predicate_builder.build_bind_attribute(:next, Time.now)
+    ))
     actions.each do |action|
       action.next = Time.now + action.interval
       action.save

@@ -137,7 +137,15 @@ class Course < ApplicationRecord
   end
 
   def current_assessments(now = DateTime.now)
-    assessments.where("start_at < :now AND end_at > :now", now: now)
+    assessments.where(
+      assessments.arel_table[:start_at].lt(
+        Assessment.predicate_builder.build_bind_attribute(:start_at, now)
+      ).and(
+        assessments.arel_table[:end_at].gt(
+          Assessment.predicate_builder.build_bind_attribute(:end_at, now)
+        )
+      )
+    )
   end
 
   def full_name
