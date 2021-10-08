@@ -66,9 +66,18 @@ class AssessmentsController < ApplicationController
 
   def index
     @is_instructor = @cud.has_auth_level? :instructor
-    announcements_tmp = Announcement.where("start_date < :now AND end_date > :now",
-       now: Time.now)
-      .where(persistent: false)
+
+    now = Time.now
+    announcements_tmp = Announcement.where(
+      Announcement.arel_table[:start_date].lt(
+        Announcement.predicate_builder.build_bind_attribute(:start_date, now)
+      ).and(
+        Announcement.arel_table[:end_date].gt(
+          Announcement.predicate_builder.build_bind_attribute(:end_date, now)
+        )
+      )
+    ).where(persistent: false)
+
     @announcements = announcements_tmp.where(course_id: @course.id)
       .or(announcements_tmp.where(system: true)).order(:start_date)
     @attachments = (@cud.instructor?) ? @course.attachments : @course.attachments.where(released: true)
