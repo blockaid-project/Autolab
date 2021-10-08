@@ -431,7 +431,7 @@ class AssessmentsController < ApplicationController
     # NOTE(zhangwen): I changed `LEFT JOIN` to `JOIN` and added
     # `released = 1` --- if a score doesn't exist or is not released, it's
     # ignored in the view anyway (we don't need nulls).
-    results = @submissions.select("submissions.id AS submission_id",
+    results = Submission.unscoped { @submissions.select("submissions.id AS submission_id",
                                   "problems.id AS problem_id",
                                   "scores.id AS score_id",
                                   "scores.*")
@@ -440,7 +440,7 @@ class AssessmentsController < ApplicationController
               .joins("JOIN scores ON
         (submissions.id = scores.submission_id
 	AND problems.id = scores.problem_id
-        AND scores.released = 1)")
+        AND scores.released = 1)") }
 
     # Process them to get into a format we want.
     @scores = {}

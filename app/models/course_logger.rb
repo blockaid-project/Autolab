@@ -6,14 +6,17 @@ class AutolabFormatter < ::Logger::Formatter
 end
 
 class CustomLogger
+  attr_accessor :formatter
+
   def initalize
+    @formatter = AutolabFormatter.new
     resetPath
   end
 
   def setLogPath(path)
     # if this can't grab the file, Autolab should still function
     @logger = Logger.new(path, "monthly")
-    @logger.formatter = AutolabFormatter.new
+    @logger.formatter = @formatter
   rescue
     @logger = Rails.logger
   end
@@ -28,6 +31,7 @@ class CustomLogger
     end
   end
 end
+
 class CourseLogger < CustomLogger
   def setCourse(course)
     setLogPath(Rails.root.join("courses", course.name, "autolab.log"))
@@ -50,5 +54,5 @@ class AssessmentLogger < CustomLogger
   end
 end
 
-COURSE_LOGGER = CourseLogger.new
-ASSESSMENT_LOGGER = AssessmentLogger.new
+COURSE_LOGGER = ActiveSupport::TaggedLogging.new(CourseLogger.new)
+ASSESSMENT_LOGGER = ActiveSupport::TaggedLogging.new(AssessmentLogger.new)
