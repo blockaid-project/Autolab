@@ -51,3 +51,6 @@ out.txt
 .vscode/
 .byebug_history
 .env
+
+.rbenv-vars
+shared/
