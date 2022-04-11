@@ -47,7 +47,7 @@ gem 'populator', '>=1.0.0'
 
 # To communicate with MySQL database
 # gem 'mysql2', '~>0.4.10'
-git 'git@github.com:zhangwen0411/activerecord-jdbc-adapter.git', branch: '52-stable' do
+git 'https://github.com/blockaid-project/activerecord-jdbc-adapter.git', branch: '52-stable-blockaid' do
   gem 'activerecord-jdbcmysql-adapter', :platform => :jruby
 end
 
@@ -151,6 +151,6 @@ git 'git@github.com:jellybob/mimemagic.git', branch: '0.3.6' do
   gem 'mimemagic', '>= 0.3.2'
 end
 
-git 'git@github.com:zhangwen0411/lazy_columns.git' do
+git 'https://github.com/blockaid-project/lazy_columns.git', branch: 'blockaid' do
   gem 'lazy_columns'
 end
