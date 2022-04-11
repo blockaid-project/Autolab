@@ -19,8 +19,8 @@ GIT
 
 GIT
   remote: https://github.com/blockaid-project/lazy_columns.git
-  branch: blockaid
   revision: 538ddbf4d95f64bf2059401c4e02d2b12d10284a
+  branch: blockaid
   specs:
     lazy_columns (0.5.9)
       activerecord (>= 3.1)
